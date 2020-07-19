@@ -5,9 +5,9 @@ This is a dating service works with Google Firebase for storing & interacting us
 
 ## Screenshots
 <p float="left">
-  <img src="/screenshot_1.PNG" width="250" />
-  <img src="/screenshot_2.PNG" width="250" /> 
-  <img src="/screenshot_3.PNG" width="250" /> 
+  <img src="/screenshot_1.jpg" width="250" />
+  <img src="/screenshot_2.jpg" width="250" /> 
+  <img src="/screenshot_3.jpg" width="250" /> 
 </p>
 
 ## Features
