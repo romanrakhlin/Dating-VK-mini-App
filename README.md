@@ -21,8 +21,7 @@ This is a dating service works with Google Firebase for storing & interacting us
 ## To Do
 
 ## License
-Dating-App is available under the MIT license. See the LICENSE file for more info.
-
+Dating-VK-mini-App is available under the MIT license. See the LICENSE file for more info.
 
 # Create VK Mini App [![npm][npm]][npm-url] [![deps][deps]][deps-url]
 [<img width="134" src="https://vk.com/images/apps/mini_apps/vk_mini_apps_logo.svg">](https://vk.com/services)
