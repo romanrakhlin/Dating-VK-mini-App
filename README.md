@@ -1,6 +1,30 @@
-[<img width="134" src="https://vk.com/images/apps/mini_apps/vk_mini_apps_logo.svg">](https://vk.com/services)
+# Dating VK Mini App
+[![License](https://img.shields.io/github/license/romarakhlin/Dating-VK-mini-App)](https://github.com/romarakhlin/Dating-VK-mini-App/blob/master/LICENSE)
+
+This is a dating service works with Google Firebase for storing & interacting users.
+
+## Screenshots
+<p float="left">
+  <img src="/screenshot_1.jpg" width="250" />
+  <img src="/screenshot_2.jpg" width="250" /> 
+  <img src="/screenshot_3.jpg" width="250" /> 
+</p>
+
+## Features
+- App has Onboarding thats shows up with first launch
+- For uploading images I've used https://imgur.com API
+- Sorting users depends on location and age
+- App uses alghorithm for filtering users by location radius
+- Users get notifications about like/match
+- Users can create & edit theirs profiles
+
+## To Do
+
+## License
+Dating-VK-mini-App is available under the MIT license. See the LICENSE file for more info.
 
 # Create VK Mini App [![npm][npm]][npm-url] [![deps][deps]][deps-url]
+[<img width="134" src="https://vk.com/images/apps/mini_apps/vk_mini_apps_logo.svg">](https://vk.com/services)
 
 ## How to install
 
@@ -31,4 +55,4 @@ Go to created folder and run:
 [npm-url]: https://npmjs.com/package/@vkontakte/create-vk-mini-app
 
 [deps]: https://img.shields.io/david/vkcom/create-vk-mini-app.svg
-[deps-url]: https://david-dm.org/vkcom/create-vk-mini-app
+[deps-url]: https://david-dm.org/vkcom/create-vk-mini-app# Dating-App
