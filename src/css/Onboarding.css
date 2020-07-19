@@ -1,0 +1,28 @@
+.onboarding {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.onboarding img{
+    height: 30vh;
+    display: block;
+    margin: 0 auto;
+    margin-top: 50%;
+}
+
+
+.onboarding p {
+    margin-left: 10%;
+    color: #818C99;
+    width: 80%;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.onboarding button{
+    margin: 0 auto;
+    display: block;
+}
