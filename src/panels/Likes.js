@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { platform, IOS } from "@vkontakte/vkui";
-import { Panel, PanelHeader, PanelHeaderBack, Cell, Avatar, Group, RichCell, Button } from "@vkontakte/vkui";
-import Icon24BrowserBack from "@vkontakte/icons/dist/24/browser_back";
+import React from "react";
+import { Panel, PanelHeader, PanelHeaderBack, Avatar, Group, RichCell, Button } from "@vkontakte/vkui";
 import Icon28Profile from "@vkontakte/icons/dist/28/profile";
-import Icon24ThumbUp from "@vkontakte/icons/dist/24/thumb_up";
-import Icon24ThumbDown from "@vkontakte/icons/dist/24/thumb_down";
 import "../css/Likes.css";
 
 const Likes = ({ id, likedYou, updateStatus, sendMessage, sendNotifications }) => {
 
     let likedYouArray = likedYou;
-
-	const osname = platform();
 
     async function likeAction(userId) {
         await sendNotifications("У вас Мэтч с кем-то", userId);
@@ -31,7 +24,7 @@ const Likes = ({ id, likedYou, updateStatus, sendMessage, sendNotifications }) =
 	return(
 		<Panel id={id} style={{overflowY: "auto"}}>
 			<PanelHeader left={<PanelHeaderBack onClick={e => {window.location.reload()}}/>}>Мои лайки</PanelHeader>
-            {likedYouArray.length == 0 ?
+            {likedYouArray.length === 0 ?
                 <p className={"clear"}>Пусто</p>
             :
                 <Group>
@@ -41,11 +34,11 @@ const Likes = ({ id, likedYou, updateStatus, sendMessage, sendNotifications }) =
                             multiline
                             before={<Avatar size={72} src={makeURL(user.image)}/>}
                             text={user.bio}
-                            caption={(user.status == false ? "Вы не подошли друг другу" : null)}
+                            caption={(user.status === false ? "Вы не подошли друг другу" : null)}
                             after={user.age + " лет"}
                             actions={(
 
-                            user.status == "none" ?
+                            user.status === "none" ?
 
                             <React.Fragment>
                                 <Button size="l" mode="commerce" onClick={e => {likeAction(user.id)}}>
@@ -56,7 +49,7 @@ const Likes = ({ id, likedYou, updateStatus, sendMessage, sendNotifications }) =
                                 </Button>
                             </React.Fragment>
 
-                                : user.status == true ?
+                                : user.status === true ?
 
                             <React.Fragment>
                                 <Button before={<Icon28Profile/>} size="l" mode="outline" href={"https://vk.com/id" + user.id}>

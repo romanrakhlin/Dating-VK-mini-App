@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import bridge from "@vkontakte/vk-bridge";
 import ScreenSpinner from "@vkontakte/vkui/dist/components/ScreenSpinner/ScreenSpinner"
-import { View, Root, Alert, Avatar, Snackbar, ModalRoot, ModalPage, ModalPageHeader, PanelHeaderButton, Div, Button, Group, RichCell } from "@vkontakte/vkui";
-import Icon16Done from "@vkontakte/icons/dist/16/done";
+import { Root, View, Alert, Avatar, Snackbar } from "@vkontakte/vkui";
 import Icon24Camera from "@vkontakte/icons/dist/24/camera";
 import Icon24Place from "@vkontakte/icons/dist/24/place";
 import Icon24NotificationCheckOutline from "@vkontakte/icons/dist/24/notification_check_outline";
 import Icon24Done from "@vkontakte/icons/dist/24/done";
-import Icon24Repeat from "@vkontakte/icons/dist/24/repeat";
-import Icon28EditOutline from "@vkontakte/icons/dist/28/edit_outline";
 import Icon16CheckCircleOutline from '@vkontakte/icons/dist/16/check_circle_outline';
 import Icon16CancelCircleOutline from '@vkontakte/icons/dist/16/cancel_circle_outline';
+import Icon28UserOutline from '@vkontakte/icons/dist/28/user_outline';
+import Icon28FireOutline from '@vkontakte/icons/dist/28/fire_outline';
+import Icon28LikeOutline from '@vkontakte/icons/dist/28/like_outline';
 import "@vkontakte/vkui/dist/vkui.css";
 import "./css/Home.css";
 
@@ -43,24 +43,7 @@ const App = () => {
 	// Основные константы
 	const [activeView, setActiveView] = useState("home");
 	const [activePanel, setActivePanel] = useState("screen1");
-	const [fetchedUser, setUser] = useState({
-		id: 0,
-	    first_name: "",
-	    last_name: "",
-	    sex: 0,
-	    city: {
-		    id: 0,
-		    title: ""
-	    },
-	    country: {
-		    id: 0,
-		    title: ""
-	    },
-	    photo_100: "",
-	    photo_max_orig: "",
-	    photo_200: "",
-	    timezone: 0,
-    });
+	const [fetchedUser, setUser] = useState(null);
 
 	const [popout, setPopout] = useState(null);
 	const [snackbarIsActive, setSnackbarIsActive] = useState(false)
@@ -87,21 +70,20 @@ const App = () => {
 	const [notDecidedArray, setNotDecidedArray] = useState([]);
 
 	useEffect(() => {
-		// Theme changer
-		bridge.subscribe(({ detail: { type, data }}) => {
-    		if (type === "VKWebAppUpdateConfig") {
-        		const schemeAttribute = document.createAttribute("scheme");
-        		schemeAttribute.value = data.scheme ? data.scheme : "bright_light";
-        		document.body.attributes.setNamedItem(schemeAttribute);
-    		}
-		});
+		// bridge.subscribe(({ detail: { type, data }}) => {
+    	// 	if (type === "VKWebAppUpdateConfig") {
+		// 		const schemeAttribute = document.createAttribute("scheme");
+		// 		schemeAttribute.value = data.scheme;
+		// 		document.body.attributes.setNamedItem(schemeAttribute);
+    	// 	}
+		// });
 
 		// Функция для получения данных о пользователе
 		async function fetchData() {
 			const user = await bridge.send("VKWebAppGetUserInfo");
 
 			// Присваиваем данные в константу fetchedUser
-			setUser({...user});
+			setUser(user);
     	}
 
 		// Вызываем функцию
@@ -120,7 +102,6 @@ const App = () => {
 	// Метод для проверки если ли Юзер в БД
 	async function onUserData() {
 		console.log('onUserData')
-		setPopout(<ScreenSpinner size="large"/>);
 		if (fetchedUser) {
 			await usersRef.doc("id" + fetchedUser.id).get().then(function(doc) {
 				// Если есть
@@ -137,12 +118,10 @@ const App = () => {
 
 					// Вызываем метод для Получения и Сортировки всех пользователей
 					getAllUsers();
-					setPopout(null);
 					setActiveView("home");
 				// Если нету
 				} else {
 					console.log("User does not exist");
-					setPopout(null);
 					setActiveView("onboarding");
 				}
 			});
@@ -172,7 +151,7 @@ const App = () => {
 			// Кладем в массив likedYouArray тех юзеров, которых лайкнул текущий юзер
 			await usersRef.doc("id" + fetchedUser.id).collection("liked_you").get().then(function(querySnapshot) {
 				querySnapshot.forEach(function(doc) {
-					if (doc.data().status == "none") {
+					if (doc.data().status === "none") {
 						notDecided.push(doc.data());
 					}
 					likedYouArray.push(doc.data());
@@ -196,14 +175,13 @@ const App = () => {
 					return;
 				} else {
 					// Проверка нужна чтобы убрать карточку самого себя
-					if (doc.data().id == userId) {
+					if (doc.data().id === userId) {
 						return;
 					} else {
-						let distance = sortAllUsers(lat, long, doc.data().lat, doc.data().long);
-
 						// Когда в прилоежниее будет больше человек
-							// if (distance <= 50) {
-							// }
+						// let distance = sortAllUsers(lat, long, doc.data().lat, doc.data().long);
+						// if (distance <= 50) {
+						// }
 
 						// Пока что отображаем всех пользователей
 						dataArray.push(doc.data());
@@ -382,7 +360,7 @@ const App = () => {
 				}
 			} catch (error) {
 	    		const result = Object.assign({ success: false, message: error.message, imageFile });
-				console.log("Error");
+				console.log(result);
 				setCancelPhoto(true);
 				setPopout(null);
 	  		}
@@ -643,16 +621,6 @@ const App = () => {
     	)
   	}
 
-	// Метод для перехода на другие View
-	const goToNextView = e => {
-		setActiveView(e.currentTarget.dataset.to);
-	};
-
-	// Метод для перехода на другие Panel
-	const goToNextPanel = e => {
-		setActivePanel(e.currentTarget.dataset.to);
-	};
-
 	// Метод для отправклю уведомлений принимая само сообщение и id человека которому пойдет уведомление
 	const sendNotifications = (message, senderId) => {
 		if (fetchedUser) {
@@ -677,6 +645,16 @@ const App = () => {
 		}
 	}
 
+	// Метод для перехода на другие Panel
+	const goToNextView = e => {
+		setActiveView(e.currentTarget.dataset.to);
+	};
+
+	// Метод для перехода на другие Panel
+	const goToNextPanel = e => {
+		setActivePanel(e.currentTarget.dataset.to);
+	};
+
 	// Возвращаем все экраны по уровням
 	return (
 		<Root activeView={activeView} popout={popout} snackbar={snackbar}>
@@ -690,7 +668,6 @@ const App = () => {
 			<View id="home" activePanel="home">
 				<Home
 					id="home"
-					goToNextView={goToNextView}
 					usersData={usersData}
 					updateLike={updateLike}
 					sendNotifications={sendNotifications}
@@ -698,33 +675,33 @@ const App = () => {
 					notDecidedArray={notDecidedArray}
 					openLikeSnackbar={openLikeSnackbar}
 					openDislikeSnackbar={openDislikeSnackbar}
+					goToNextView={goToNextView}
 				/>
 			</View>
 			<View id="likes" activePanel="likes">
 				<Likes
 					id="likes"
-					goToNextView={goToNextView}
 					likedYou={likedYou}
 					updateStatus={updateStatus}
 					sendNotifications={sendNotifications}
+					goToNextView={goToNextView}
 				/>
 			</View>
 			<View id="show" activePanel="show">
 				<Show
 					id="show"
-					goToNextView={goToNextView}
 					username={username}
 					userAge={userAge}
 					userBio={userBio}
 					userFileUrl={userFileUrl}
 					showAskAlert={showAskAlert}
 					snackbar={snackbar}
+					goToNextView={goToNextView}
 				/>
 			</View>
 			<View id="edit" activePanel="edit">
 				<Edit
 					id="edit"
-					goToNextView={goToNextView}
 					onFileChange={onFileChange}
 					confirmLocation={confirmLocation}
 					username={username}
@@ -733,18 +710,19 @@ const App = () => {
 					updatePersonalData={updatePersonalData}
 					showEditAlert={showEditAlert}
 					snackbar={snackbar}
+					goToNextView={goToNextView}
 				/>
 			</View>
 			<View id="create" activePanel="create">
 				<Create
 					id="create"
-					goToNextView={goToNextView}
 					onFileChange={onFileChange}
 					savePersonalData={savePersonalData}
 					showCreateAlert={showCreateAlert}
 					showPhotoAlert={showPhotoAlert}
 					cancelPhoto={cancelPhoto}
 					snackbar={snackbar}
+					goToNextView={goToNextView}
 				/>
 			</View>
 		</Root>

@@ -1,6 +1,6 @@
 import React from 'react';
 import '@vkontakte/vkui/dist/vkui.css';
-import { Panel, PanelHeader, Button } from '@vkontakte/vkui';
+import { Panel, Button } from '@vkontakte/vkui';
 import pic1 from '../img/Board1.svg'
 import '../../css/Onboarding.css'
 

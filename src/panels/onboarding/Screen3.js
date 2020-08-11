@@ -14,7 +14,7 @@ const Screen3 = ({ id, goToNextPanel, confirmLocation, cancelLocation, showLocat
             <p></p>
             <Button
                 onClick={e => {
-                    if (cancelLocation == true) {
+                    if (cancelLocation === true) {
                         showLocationAlert();
                     } else {
                         goToNextPanel(e);

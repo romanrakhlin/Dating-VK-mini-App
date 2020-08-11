@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { platform, IOS } from "@vkontakte/vkui";
-import { Panel, PanelHeader, PanelHeaderButton, Cell, Avatar, Card, Checkbox, FormLayoutGroup, FormLayout, Input, Select, Button, FixedLayout, Separator, Div, Textarea, File, Alert, Snackbar } from "@vkontakte/vkui";
+import React, { useEffect } from "react";
+import { Panel, PanelHeader, Card, FormLayoutGroup, FormLayout, Input, Select, Button, Div, File } from "@vkontakte/vkui";
 import Icon24Camera from "@vkontakte/icons/dist/24/camera";
 import Icon28ChecksOutline from "@vkontakte/icons/dist/28/checks_outline";
 
@@ -20,8 +18,6 @@ const Create = ({ id, goToNextView, onFileChange, savePersonalData, showCreateAl
 		sex_select = document.getElementById("sex_select");
         look_sex_select = document.getElementById("look_sex_select");
 	});
-
-	const osname = platform();
 
 	return(
 		<Panel id={id} style={{overflowY: "auto"}}>
@@ -56,19 +52,19 @@ const Create = ({ id, goToNextView, onFileChange, savePersonalData, showCreateAl
 				                mode="primary"
 				                onClick={e => {
 									if (
-										username_input.value == ""
+										username_input.value === ""
 											||
-										age_input.value == ""
+										age_input.value === ""
 											||
-										bio_input.value == ""
+										bio_input.value === ""
 											||
-										sex_select.value == ""
+										sex_select.value === ""
 											||
-										look_sex_select.value == ""
+										look_sex_select.value === ""
 									) {
 										showCreateAlert();
 										console.log("Не все поля введены");
-									} else if (cancelPhoto == true) {
+									} else if (cancelPhoto === true) {
 										showPhotoAlert();
 									} else {
 										savePersonalData(username_input.value, age_input.value, bio_input.value, sex_select.value, look_sex_select.value);

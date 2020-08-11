@@ -32,10 +32,12 @@
     "eruda-code": "^2.0.0",
     "eruda-dom": "^2.0.0",
     "firebase": "^7.16.1",
+    "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-deck-swiper": "^1.0.9",
     "react-dom": "^16.13.1",
+    "react-icons": "^3.10.0",
     "react-tinder-card": "^1.1.4"
   },
   "browserslist": {

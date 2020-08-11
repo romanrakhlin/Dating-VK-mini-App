@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { platform, IOS } from "@vkontakte/vkui";
-import { Panel, PanelHeader, PanelHeaderBack, Cell, Avatar, Card, FormLayoutGroup, FormLayout, Input, Select, Button, FixedLayout, Separator, Div, Textarea, File } from "@vkontakte/vkui";
-import Icon24BrowserBack from "@vkontakte/icons/dist/24/browser_back";
+import { Panel, PanelHeader, PanelHeaderBack, Card, FormLayoutGroup, FormLayout, Input, Button, Div, File } from "@vkontakte/vkui";
 import Icon24Camera from "@vkontakte/icons/dist/24/camera";
 import Icon24Place from "@vkontakte/icons/dist/24/place";
 
@@ -26,8 +23,6 @@ const Edit = ({ id, goToNextView, onFileChange, confirmLocation, username, userA
 		bio_input.value = bio;
 		console.log(userGeodata);
 	});
-
-	const osname = platform();
 
 	return(
 		<Panel id={id} style={{overflowY: "auto"}}>
@@ -56,11 +51,11 @@ const Edit = ({ id, goToNextView, onFileChange, confirmLocation, username, userA
 				                mode="primary"
 				                onClick={e => {
 									if (
-										username_input.value == ""
+										username_input.value === ""
 											||
-										age_input.value == ""
+										age_input.value === ""
 											||
-										bio_input.value == ""
+										bio_input.value === ""
 									) {
 										showEditAlert();
 										console.log("Не все поля введены");

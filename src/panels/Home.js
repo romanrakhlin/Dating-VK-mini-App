@@ -5,13 +5,15 @@ import Icon28Profile from "@vkontakte/icons/dist/28/profile";
 import Icon24Like from "@vkontakte/icons/dist/24/like";
 import CardButtons from '../components/CardButtons';
 import Card from '../components/Card';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Home = ({ id, goToNextView, snackbar, usersData, updateLike, sendNotifications, notDecidedArray, setActiveModal, openLikeSnackbar, openDislikeSnackbar, onUserData }) => {
 
     const [dataArray, setDataArray] = useState([]);
+    const [visibility, setVisibility] = useState(false);
     const notDecided = notDecidedArray;
 
-    const handleOnSwipe = (swipeDirection, id) => {
+    const handleOnSwipe = (swipeDirection) => {
         if (swipeDirection === direction.RIGHT) {
             updateLike(id);
             sendNotifications("Вы кому-то понравились", id);
@@ -24,48 +26,66 @@ const Home = ({ id, goToNextView, snackbar, usersData, updateLike, sendNotificat
     };
 
     const renderButtons = ({ right, left }) => (
-        <CardButtons
-            right={right}
-            left={left}
-        />
+        <Div className="buttons">
+            <CardButtons
+                right={right}
+                left={left}
+            />
+        </Div>
     );
 
     const renderCard = () => {
-        console.log("length", dataArray);
         if(dataArray.length > 0) {
             return (
                 <Swipeable
                     renderButtons={renderButtons}
-                    onSwipe={handleOnSwipe}
-                    onSwipe={(dir) => handleOnSwipe(dir, dataArray[0].id)}
+                    onSwipe={(e) => {
+                        handleOnSwipe(e);
+                        setVisibility(false);
+                    }}
                 >
-                    <Card item={dataArray[0]} />
+                    {showProgress()}
                 </Swipeable>
             );
         }
         else {
             return (
                 <Div className="endCard">
-                    <Div className="theEnd">
-                        <p className="blackLabel">Мы стараемся подобрать подходящие анкеты</p>
-                        <p className="grayLabel">Задайдите через пару минут</p>
-                        <Div className="svg">
-                            <img src="https://image.flaticon.com/icons/svg/132/132244.svg" alt=""/>
-                        </Div>
-                    </Div>
+                    <CircularProgress />
                 </Div>
-            )
+            );
+        }
+    }
+
+    useEffect(() => {
+        // const abortController = new AbortController();
+        setTimeout(() => {
+            setVisibility(true);
+        }, 500);
+        // return () => clearTimeout(time);
+    }, [dataArray.length])
+
+    const showProgress = () => {
+        if (visibility === false) {
+            return (
+                <Div className="endCard">
+                    <CircularProgress />
+                </Div>
+            );
+        } else if (visibility === true) {
+            return (
+                <Card item={dataArray[0]} />
+            );
         }
     }
 
     useEffect(() => {
         setDataArray(state => ([ ...state, ...usersData ]));
-        console.log('DataArray', dataArray);
     }, [usersData]);
 
     return (
         <Panel id={id}>
-            <PanelHeader left={<PanelHeaderButton onClick={goToNextView} data-to="show">{<Icon28Profile/>}</PanelHeaderButton>}>Шпили Вилли</PanelHeader>
+            <PanelHeader left={<PanelHeaderButton onClick={goToNextView} data-to="show">{<Icon28Profile/>}</PanelHeaderButton>}>Познакомимся?</PanelHeader>
             <Div className="containerOne">
                 <Button before={<Icon24Like/>} size="l" onClick={notDecided.length == 0 ? null : goToNextView} data-to="likes">
                     {notDecided.length == 0 ? "(0)" : "(" + notDecided.length + ")"}
